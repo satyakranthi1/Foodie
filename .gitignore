@@ -1,2 +1,37 @@
 node_modules/
 .serverless/
+
+# Outputs
+bazel-*
+test-project-host-*
+dist/
+dist-schema/
+
+# IDEs
+jsconfig.json
+
+# Also ignore code styles because .editorconfig is used instead.
+.idea/codeStyles/
+
+# VSCode
+# https://github.com/github/gitignore/blob/master/Global/VisualStudioCode.gitignore
+.vscode/
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+**/*.code-workspace
+
+# Typings file.
+typings/
+
+# Misc
+coverage/
+tmp/
+npm-debug.log*
+yarn-error.log*
+.ng_pkg_build/
+
+# Mac OSX Finder files.
+**/.DS_Store
+.DS_Store
