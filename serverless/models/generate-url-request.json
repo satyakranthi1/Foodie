@@ -1,0 +1,22 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "title": "foodie-url",
+    "type": "object",
+    "properties": {
+      "restaurantId": {
+        "type": "string"
+      },
+      "reviewId": {
+        "type": "string"
+      },
+      "timestamp": {
+          "type": "string"
+      }
+    },
+    "required": [
+      "cuisineId",
+      "reviewId",
+      "timestamp"
+    ],
+    "additionalProperties": false
+}

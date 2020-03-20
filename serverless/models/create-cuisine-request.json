@@ -1,0 +1,14 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "title": "foodie-cuisine",
+    "type": "object",
+    "properties": {
+      "cuisineName": {
+        "type": "string"
+      }
+    },
+    "required": [
+      "cuisineName"
+    ],
+    "additionalProperties": false
+}

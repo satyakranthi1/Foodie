@@ -1,0 +1,18 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "title": "foodie-deleteRestaurant",
+    "type": "object",
+    "properties": {
+      "cuisineId": {
+        "type": "string"
+      },
+      "timestamp": {
+          "type": "string"
+      }
+    },
+    "required": [
+      "cuisineId",
+      "timestamp"
+    ],
+    "additionalProperties": false
+}
