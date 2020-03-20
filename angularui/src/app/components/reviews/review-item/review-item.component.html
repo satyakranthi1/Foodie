@@ -1,0 +1,28 @@
+<!-- <div class="row">
+    <span class="pull-right m-l-3">
+            <img
+            src="https://s30451.pcdn.co/wp-content/uploads/2018/07/chipotle-vegan-option.jpg" 
+            class="img-responsive" 
+            style="max-height: 100px;">
+    </span>
+    <div class="pull-left m-r-3">
+        <h4 class="list-group-item-heading">{{ review.nickName }}</h4>
+        <h5 class="list-group-item-heading">Rating: {{ review.rating }}/5</h5>
+        <p class="list-group-item-text">{{ review.description }}</p>
+    </div>
+</div>
+<button class="btn btn-primary">Add Image</button> -->
+
+<div class="col-3">
+    <div class="card m-3" style="width: 18rem;">
+        <img [src]="attachmentUrl" class="card-img-top">
+        <div class="card-body">
+            <div>
+                <h5 class="card-title">{{ review.nickName }}</h5>
+                <h6 class="card-title">Rating: {{ review.rating }}/5</h6>
+                <p class="card-text">{{ review.description }}</p>
+                <a *ngIf="review.userId == userId" [routerLink]="['/reviews/review', review.reviewId, { restaurantId: review.restaurantId, timestamp: review.timestamp }]"routerLinkActive="router-link-active" class="btn btn-primary">Upload Image</a>
+            </div>
+        </div>
+    </div>
+</div>

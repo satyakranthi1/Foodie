@@ -1,0 +1,15 @@
+<div *ngIf="cuisinesList" class="m-3" >
+    <div class="container-fluid col-md-4 offset-md-4">
+        <form [formGroup]="addCuisineForm" class="form-inline" (ngSubmit)="onSubmit(addCuisineForm.value)">
+                <input class="form-control col-md-8" placeholder="Cuisine Name" aria-label="Search" id="cuisineName" formControlName="cuisineName">
+                <button class="btn btn-outline-success col-md-4" type="submit">Add Cuisine</button>
+        </form>
+    </div>
+    <div class="row m-3">
+        <div *ngFor="let cuisine of cuisinesList">
+            <app-cuisine-item
+            [cuisine]=cuisine
+            ></app-cuisine-item>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,15 @@
+<div *ngIf="restaurantsList" class="m-5" >
+    <div class="container-fluid col-md-10 offset-md-1">
+        <form [formGroup]="addRestaurantForm" class="form-inline" (ngSubmit)="onSubmit(addRestaurantForm.value)">
+                <input class="form-control col-md-5" placeholder="Restaurant Name" aria-label="Search" id="restaurantName" formControlName="restaurantName">
+                <input class="form-control col-md-3" placeholder="City" aria-label="Search" id="restaurantCity" formControlName="restaurantCity">
+                <input class="form-control col-md-2" placeholder="State" aria-label="Search" id="restaurantState" formControlName="restaurantState">
+                <button class="btn btn-outline-success col-md-2" type="submit">Add Restaurant</button>
+        </form>
+    </div>
+    <div class="row m-5">
+        <div *ngFor="let restaurant of restaurantsList">
+            <app-restaurant-item [restaurant]="restaurant" (deleteEvent)="onDeleteRestaurant($event)"></app-restaurant-item>
+        </div>
+    </div>
+</div>

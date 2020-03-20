@@ -1,0 +1,29 @@
+<form [formGroup]="addReviewForm" (ngSubmit)="onSubmit(addReviewForm.value)">
+    <div class="form-group row m-2 p-1">
+        <label for="inputName" class="col-sm-1 col-form-label font-weight-normal">Name</label>
+        <div class="col-sm-11">
+            <input class="form-control" placeholder="Enter Your Nick Name" aria-label="nickName" id="nickName" formControlName="nickName">
+        </div>
+    </div>
+    <div class="form-group row m-2 p-1">
+        <label for="rating" class="col-sm-1 col-form-label font-weight-normal">Rating</label>
+        <div class="col-sm-3">
+            <input class="form-control" placeholder="Enter Rating Out of 5" aria-label="rating" id="rating" formControlName="rating">
+        </div>
+    </div>
+    <div class="form-group row m-2 p-1">
+        <label for="description" class="col-sm-1 col-form-label font-weight-normal">Experience:</label>
+        <div class="col-sm-11">
+            <input class="form-control" placeholder="Describe Your Experience In A Sentence" aria-label="rating" id="description" formControlName="description">
+        </div>
+    </div>
+    <button class="btn btn-outline-success col-md-2 m-2" type="submit">Add Review</button>
+</form>
+
+<div class="m-5" *ngIf="reviewsList">
+    <div class="row m-5">
+        <div *ngFor="let review of reviewsList">
+            <app-review-item [review]="review"></app-review-item>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,10 @@
+<nav class="navbar navbar-light bg-light">
+    <a class="navbar-brand" [routerLink]="['']" routerLinkActive="router-link-active" >FOODIE</a>
+    <ul class="navbar-nav mr-auto">
+        <li class="nav-item">
+            <a class="nav-link" [routerLink]="['/cuisines']" [routerLinkActive]="['active']" *ngIf="auth.loggedIn">Cuisines</a>
+        </li>
+    </ul>
+    <button type="button" class="btn btn-info" (click)="login()" *ngIf="!auth.loggedIn">Log In</button>
+    <button type="button" class="btn btn-info" (click)="logout()" *ngIf="auth.loggedIn">Log Out</button>
+</nav>
