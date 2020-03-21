@@ -7,7 +7,7 @@
         </div>
         <div class="card-body">
             <div>
-                <a class="stretched-link" [routerLink]="['/reviews', restaurant.restaurantId]" routerLinkActive="router-link-active">
+                <a class="stretched-link" [routerLink]="['/restaurants', restaurant.restaurantName.toLowerCase(), 'reviews', { restaurantId: restaurant.restaurantId}]" routerLinkActive="router-link-active">
                     <h5 class="card-title text-center">{{ restaurant.restaurantName }}</h5>
                     <p class="card-text text-center">{{ restaurant.restaurantCity }}, {{ restaurant.restaurantState }}</p>
                 </a>

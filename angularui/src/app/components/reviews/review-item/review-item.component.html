@@ -21,7 +21,7 @@
                 <h5 class="card-title">{{ review.nickName }}</h5>
                 <h6 class="card-title">Rating: {{ review.rating }}/5</h6>
                 <p class="card-text">{{ review.description }}</p>
-                <a *ngIf="review.userId == userId" [routerLink]="['/reviews/review', review.reviewId, { restaurantId: review.restaurantId, timestamp: review.timestamp }]"routerLinkActive="router-link-active" class="btn btn-primary">Upload Image</a>
+                <a *ngIf="review.userId == userId" [routerLink]="['/reviews', review.reviewId, { restaurantId: review.restaurantId, timestamp: review.timestamp }]"routerLinkActive="router-link-active" class="btn btn-primary">Upload Image</a>
             </div>
         </div>
     </div>

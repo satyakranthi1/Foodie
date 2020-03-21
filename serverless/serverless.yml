@@ -44,7 +44,7 @@ provider:
     REVIEWS_TABLE: Reviews-${self:provider.stage}
     IMAGES_S3_BUCKET: foodie-images-spenu-${self:provider.stage}
     SIGNED_URL_EXPIRATION: 300
-    AUTH_0_SECRET_ID: Auth0Secret-${self:provider.stage}
+    AUTH_0_SECRET_ID: Auth0Secret-foodie-spenu-${self:provider.stage}
     AUTH_0_SECRET_FIELD: auth0Secret
 
 functions:
@@ -388,7 +388,7 @@ resources:
     KMSKeyAlias:
       Type: AWS::KMS::Alias
       Properties:
-        AliasName: alias/auth0Key-${self:provider.stage}
+        AliasName: alias/auth0Key-foodie-spenu-${self:provider.stage}
         TargetKeyId: !Ref KMSKey
 
     Auth0Secret:
