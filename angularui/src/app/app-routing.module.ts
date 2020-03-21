@@ -21,17 +21,17 @@ const routes: Routes = [
     canActivate: [AuthGuard]
   },
   {
-    path: 'restaurants/:id',
+    path: 'cuisines/:cuisine/restaurants',
     component: RestaurantsComponent,
     canActivate: [AuthGuard]
   },
   {
-    path: 'reviews/:restaurantId',
+    path: 'restaurants/:restaurant/reviews',
     component: ReviewsComponent,
     canActivate: [AuthGuard]
   },
   {
-    path: 'reviews/review/:reviewId',
+    path: 'reviews/:reviewId',
     component: UploadImageComponent,
     canActivate: [AuthGuard]
   }
