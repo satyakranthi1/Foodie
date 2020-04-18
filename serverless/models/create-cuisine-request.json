@@ -3,11 +3,15 @@
     "title": "foodie-cuisine",
     "type": "object",
     "properties": {
+      "id": {
+        "type": "string"
+      },
       "cuisineName": {
         "type": "string"
       }
     },
     "required": [
+      "id",
       "cuisineName"
     ],
     "additionalProperties": false
