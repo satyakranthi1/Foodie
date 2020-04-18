@@ -24,16 +24,11 @@ export class RestaurantsHelper {
         }
     }
 
-    async createRestaurant(newRestaurant: CreateRestaurantRequest, userId: string) {
+    async createRestaurant(newRestaurant: CreateRestaurantRequest) {
         logger.info(`Creating new restaurant`)
         let result: any
-        const timestamp = new Date().toISOString()
-        const restaurantId = uuid.v4()
         const addRestaurantItem: RestaurantItem = {
-            ...newRestaurant,
-            timestamp,
-            restaurantId,
-            userId
+            ...newRestaurant
         }
         try { 
             result = await restaurantsAccess.putRestaurant(addRestaurantItem)
