@@ -12,13 +12,12 @@ const reviewsHelper = new ReviewsHelper()
 export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
     logger.info(`Handling event: ${JSON.stringify(event)}`)
     const newReview: CreateReviewRequest = JSON.parse(event.body)
-    const userId: string = getUserId(event);
     logger.info(`Parsed event body: ${JSON.stringify(newReview)}`)
     let addedReview: ReviewItem;
     let statusCode: number
     let body: string
     try {
-        addedReview = await reviewsHelper.createReview(newReview, userId)
+        addedReview = await reviewsHelper.createReview(newReview)
         logger.info(`Added review item: ${JSON.stringify(addedReview)}`)
         statusCode = 201
         body = JSON.stringify({

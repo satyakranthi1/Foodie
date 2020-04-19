@@ -22,16 +22,11 @@ export class ReviewsHelper {
         }
     }
     
-    async createReview(newReview: CreateReviewRequest, userId: string) {
+    async createReview(newReview: CreateReviewRequest) {
         logger.info(`Creating new review`)
         let result: any
-        const timestamp = new Date().toISOString()
-        const reviewId = uuid.v4()
         const addReviewItem: ReviewItem = {
-            ...newReview,
-            timestamp,
-            reviewId,
-            userId
+            ...newReview
         }
         try {
             result = await reviewsAccess.putReview(addReviewItem)
