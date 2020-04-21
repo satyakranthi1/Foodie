@@ -28,7 +28,8 @@ export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEven
         logger.info(`Updated todo with attachmentUrl`)
         statusCode = 201
         body = JSON.stringify({
-          uploadUrl: preSignedUploadUrl
+          uploadUrl: preSignedUploadUrl,
+          attachmentUrl: attachmentUrl
           })
       } else {
         throw new Error('Review does not belong to the user')
