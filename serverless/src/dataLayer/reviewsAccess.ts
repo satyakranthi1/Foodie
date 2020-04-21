@@ -154,24 +154,12 @@ export class ReviewsAccess {
                     }
                 }
             }
-            
-            // reviewIdsPromises = reviews.map(async (review) => {
-            //     result = await this.docClient.delete({
-            //         TableName: this.reviewsTable,
-            //         Key: {
-            //             restaurantId: review.restaurantId,
-            //             timestamp: review.timestamp
-            //         },
-            //         ReturnValues: 'ALL_OLD'
-            //     }).promise()
-            //     logger.info(`Results from deleteAllReviews ${JSON.stringify(result)}`)
-            //     return result.Attributes.reviewId
-            // } )
-            // reviewIds = await Promise.all(reviewIdsPromises)
+
+            logger.info(`Reviews are: ${JSON.stringify(reviews)}`);
             reviewIds = reviews.map((review) => {
                 review.reviewId
             })
-            logger.info(`ReviewIds: ${reviewIds}`)
+            logger.info(`ReviewIds: ${JSON.stringify(reviewIds)}`)
             const s3DeletePromises = reviewIds.map(async (reviewId) => {
                 logger.info(`ReviewId: ${reviewId}`)
                 await s3Helper.removeImage(reviewId)
