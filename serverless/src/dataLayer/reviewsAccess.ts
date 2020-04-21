@@ -157,7 +157,7 @@ export class ReviewsAccess {
 
             logger.info(`Reviews are: ${JSON.stringify(reviews)}`);
             reviewIds = reviews.map((review) => {
-                review.reviewId
+                return review.reviewId
             })
             logger.info(`ReviewIds: ${JSON.stringify(reviewIds)}`)
             const s3DeletePromises = reviewIds.map(async (reviewId) => {
