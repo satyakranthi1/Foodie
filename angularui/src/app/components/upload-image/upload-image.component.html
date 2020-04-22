@@ -1,8 +1,0 @@
-<div class="container m-5">
-    <h1 class="m-2">File Upload</h1>
-    <input type="file" (change)="onFileSelected($event)" class="m-2 form-control-file">
-    <button class="btn btn-primary m-2" type="button" (click)="onUpload()">Upload</button>
-    <div *ngIf="uploadSuccessful" class="alert alert-success col-md-6" role="alert">
-        Upload Successful. <a [routerLink]="['/reviews', restaurantId]" routerLinkActive="router-link-active"  class="alert-link">Click here</a> to go back to reviews.
-    </div>
-</div>

@@ -6,6 +6,9 @@
       "cuisineId": {
         "type": "string"
       },
+      "restaurantId": {
+        "type": "string"
+      },
       "restaurantName": {
           "type": "string"
       },
@@ -14,13 +17,22 @@
       },
       "restaurantState": {
         "type": "string"
+      },
+      "timestamp": {
+        "type": "string"
+      },
+      "userId": {
+        "type": "string"
       }
     },
     "required": [
       "cuisineName",
+      "restaurantId",
       "restaurantName",
       "restaurantCity",
-      "restaurantState"
+      "restaurantState",
+      "timestamp",
+      "userId"
     ],
     "additionalProperties": false
 }

@@ -6,6 +6,12 @@
       "restaurantId": {
         "type": "string"
       },
+      "timestamp": {
+        "type": "string"
+      },
+      "reviewId": {
+        "type": "string"
+      },
       "nickName": {
           "type": "string"
       },
@@ -13,6 +19,9 @@
         "type": "string"
       },
       "description": {
+        "type": "string"
+      },
+      "userId": {
         "type": "string"
       }
     },

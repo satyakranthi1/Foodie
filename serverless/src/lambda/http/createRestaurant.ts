@@ -12,13 +12,11 @@ const restaurantsHelper = new RestaurantsHelper()
 export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
     logger.info(`Handling event: ${JSON.stringify(event)}`)
     const newRestaurant: CreateRestaurantRequest = JSON.parse(event.body)
-    const userId = getUserId(event)
-    logger.info(`Parsed event body: ${JSON.stringify(newRestaurant)} userId: ${userId}`)
     let addedRestaurant: RestaurantItem;
     let statusCode: number
     let body: string
     try {
-        addedRestaurant = await restaurantsHelper.createRestaurant(newRestaurant, userId)
+        addedRestaurant = await restaurantsHelper.createRestaurant(newRestaurant)
         logger.info(`Added Restaurant Item: ${JSON.stringify(addedRestaurant)}`)
         statusCode = 201
         body = JSON.stringify({

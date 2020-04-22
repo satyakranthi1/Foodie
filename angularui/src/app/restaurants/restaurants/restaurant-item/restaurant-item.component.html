@@ -1,0 +1,17 @@
+<div class="col-3">
+    <div class="card m-3" style="width: 18rem;">
+        <div *ngIf="restaurant.userId == userId" 
+        id="cardHeader" class="card-header text-center">
+            <button class="btn btn-danger" (click)="deleteEvent.emit
+            ({ restaurantId: restaurant.restaurantId, cuisineId: restaurant.cuisineId, timestamp: restaurant.timestamp })">Delete</button>
+        </div>
+        <div class="card-body">
+            <div>
+                <a class="stretched-link" (click)="goToReviews(restaurant.restaurantId)" routerLinkActive="router-link-active">
+                    <h5 class="card-title text-center">{{ restaurant.restaurantName }}</h5>
+                    <p class="card-text text-center">{{ restaurant.restaurantCity }}, {{ restaurant.restaurantState }}</p>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>

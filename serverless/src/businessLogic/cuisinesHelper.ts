@@ -1,5 +1,3 @@
-import * as uuid from 'uuid'
-
 import { createLogger } from '../utils/logger'
 import { CuisinesAccess } from '../dataLayer/cuisinesAccess'
 import { CreateCuisineRequest } from '../requests/CreateCuisineRequest'
@@ -25,7 +23,7 @@ export class CuisinesHelper {
     async createCuisine(newCuisine: CreateCuisineRequest) {
         logger.info('Passing new cuisine request to CuisinesAccess')
         const addCuisineItem: CuisineItem = {
-            id: uuid.v4(),
+            id: newCuisine.id,
             cuisineName: newCuisine.cuisineName
         }
         let item: CuisineItem
