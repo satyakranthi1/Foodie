@@ -1,5 +1,3 @@
-import * as uuid from 'uuid'
-
 import { createLogger } from '../utils/logger'
 import { ReviewsAccess } from '../dataLayer/reviewsAccess'
 import { CreateReviewRequest } from '../requests/CreateReviewRequest'

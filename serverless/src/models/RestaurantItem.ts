@@ -6,4 +6,5 @@ export interface RestaurantItem {
     restaurantCity: string
     restaurantState: string
     userId: string
+    deleted: boolean
 }
