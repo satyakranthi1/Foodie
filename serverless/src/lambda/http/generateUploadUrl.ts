@@ -23,7 +23,7 @@ export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEven
     try {
       if (reviewsHelper.isUserReview(userId, generateUrlRequest.restaurantId)) {
         preSignedUploadUrl = await s3Helper.GenerateUploadUrl(generateUrlRequest.reviewId)
-        const attachmentUrl = `https://${bucketName}.s3.amazonaws.com/${generateUrlRequest.reviewId}`
+        const attachmentUrl = `https://${bucketName}.s3.amazonaws.com/thumbnails/${generateUrlRequest.reviewId}`
         await reviewsHelper.updateAttachmentUrl(generateUrlRequest.restaurantId, generateUrlRequest.timestamp, attachmentUrl)
         logger.info(`Updated todo with attachmentUrl`)
         statusCode = 201

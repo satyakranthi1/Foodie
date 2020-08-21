@@ -35,7 +35,7 @@ export class S3Helper {
         }
     }
 
-    deleteObject(reviewId: string) {
+    async deleteObject(reviewId: string) {
         return new Promise(function(resolve, reject) {
             try {
                 s3.deleteObject({
@@ -54,5 +54,33 @@ export class S3Helper {
                 logger.error(`remove image failed: ${JSON.stringify(err)}`)
             }
         })
+    }
+
+    async getImage(reviewId: string) {
+        try {
+            const s3Object = await s3.getObject({ 
+                Bucket: bucketName,
+                Key: reviewId
+            }).promise()
+            return s3Object.Body
+        } catch(err) {
+            logger.error(`get image failed: ${JSON.stringify(err)}`)
+            throw new Error('get image failed')
+        } 
+    }
+
+    async putImage(imageBuffer: Buffer, reviewId: string) {
+        try {
+            const key = `thumbnails/${reviewId}`
+            await s3.putObject({ 
+                Bucket: bucketName,
+                Key: key,
+                Body: imageBuffer
+            }).promise()
+            logger.info(`putImage successful Key: ${key}`)
+        } catch(err) {
+            logger.error(`put image failed: ${JSON.stringify(err)}`)
+            throw new Error('put image failed')
+        }
     }
 }

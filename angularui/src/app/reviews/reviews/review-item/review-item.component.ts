@@ -38,4 +38,12 @@ export class ReviewItemComponent implements OnInit {
     this.router.navigate(['upload-image'], { relativeTo: this.route });
   }
 
+  async updateImageUrl(attachmentUrl: string ) {
+    if (attachmentUrl.includes('thumbnails')) {
+      this.attachmentUrl = attachmentUrl.replace('thumbnails/', '');
+    } else {
+      this.attachmentUrl = 'http://design-ec.com/d/e_others_50/l_e_others_500.png';
+    }
+  }
+
 }
