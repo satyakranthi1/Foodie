@@ -49,23 +49,19 @@ export class RestaurantsAccess {
     }
 
     async deleteRestaurant(cuisineId: string, timestamp: string, userId: string) {
-        logger.info(`Deleting restaurant of cuisineId: ${cuisineId} & timestamp: ${timestamp} for userId: ${userId}`)
-        let result: any
+        logger.info(`Soft deleting restaurant of cuisineId: ${cuisineId} & timestamp: ${timestamp} for userId: ${userId}`)
         try {
-            result = await this.docClient.delete({
+            await this.docClient.update({
                 TableName: this.restaurantsTable,
                 Key: {
                     cuisineId: cuisineId,
                     timestamp: timestamp
                 },
-                ConditionExpression: 'userId = :userId',
+                UpdateExpression: 'set deleted=:d',
                 ExpressionAttributeValues: {
-                    ':userId': userId
-                },
-                ReturnValues: 'ALL_OLD'
+                    ':d': true
+                }
             }).promise()
-            logger.info(`Result from docClient.delete ${JSON.stringify(result)}`)
-            return result
         } catch (err) {
             logger.error('operation threw an error', { error: err.message })
             logger.info(`error: ${JSON.stringify(err)}`)

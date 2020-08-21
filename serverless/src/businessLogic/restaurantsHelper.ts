@@ -1,23 +1,24 @@
-import * as uuid from 'uuid'
-
 import { createLogger } from '../utils/logger'
 import { RestaurantsAccess } from '../dataLayer/restaurantsAccess'
 import { CreateRestaurantRequest } from '../requests/CreateRestaurantRequest'
 import { RestaurantItem } from '../models/RestaurantItem'
-import { ReviewsAccess } from '../dataLayer/reviewsAccess'
 
 const logger = createLogger(`RestaurantsHelper`)
 const restaurantsAccess = new RestaurantsAccess()
-const reviewsAccess = new ReviewsAccess()
 
 export class RestaurantsHelper {
     async getRestaurants(cuisineId: string) {
         logger.info(`CuisineId received ${cuisineId}`)
-        let items: any
         try {
-            items = restaurantsAccess.getRestaurants(cuisineId)
+            const items = await restaurantsAccess.getRestaurants(cuisineId)
             logger.info(`items returned from restaurantsAccess layer: ${JSON.stringify(items)}`)
-            return items
+            const filteredItems = items.filter((item) => {
+                if(item && !item.deleted) {
+                    return true
+                }
+            })
+            logger.info(`filtered items: ${JSON.stringify(filteredItems)}`)
+            return filteredItems
         } catch(err) {
             logger.error('operation threw an error', { error: err.message })
             throw new Error(err)
@@ -28,7 +29,8 @@ export class RestaurantsHelper {
         logger.info(`Creating new restaurant`)
         let result: any
         const addRestaurantItem: RestaurantItem = {
-            ...newRestaurant
+            ...newRestaurant,
+            deleted : false
         }
         try { 
             result = await restaurantsAccess.putRestaurant(addRestaurantItem)
@@ -44,9 +46,6 @@ export class RestaurantsHelper {
         let result: any
         try {
             result = await restaurantsAccess.deleteRestaurant(cuisineId, timestamp, userId)
-            logger.info(`Restaurant deleted ${JSON.stringify(result.Attributes.restaurantId)}`)
-            logger.info(`Result from delete restaurant ${JSON.stringify(result)}`)
-            await reviewsAccess.deleteAllReviews(result.Attributes.restaurantId)
         } catch(err) {
             logger.error('operation threw an error', { error: err.message })
             logger.error(`error: ${JSON.stringify(err)}`)
