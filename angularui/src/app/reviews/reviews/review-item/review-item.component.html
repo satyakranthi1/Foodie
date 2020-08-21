@@ -15,7 +15,7 @@
 
 <div class="col-3">
     <div class="card m-3" style="width: 18rem;">
-        <img [src]="attachmentUrl" class="card-img-top">
+        <img [src]="attachmentUrl" class="card-img-top" (error)=updateImageUrl(attachmentUrl)>
         <div class="card-body">
             <div>
                 <h5 class="card-title">{{ review.nickName }}</h5>
