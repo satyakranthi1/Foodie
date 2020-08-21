@@ -17,7 +17,7 @@ export class RestaurantsHelper {
                     return true
                 }
             })
-            logger.info(`items returned from restaurantsAccess layer: ${JSON.stringify(filteredItems)}`)
+            logger.info(`filtered items: ${JSON.stringify(filteredItems)}`)
             return filteredItems
         } catch(err) {
             logger.error('operation threw an error', { error: err.message })
