@@ -37,6 +37,9 @@ provider:
   tracing:
     lambda: true
     apiGateway: true
+  
+  logs:
+    restApi: true
 
   environment:
     CUISINES_TABLE: Cuisines-${self:provider.stage}
@@ -264,6 +267,20 @@ functions:
         Resource:
           - '*'
 
+  CreateThumbnail:
+    handler: src/lambda/s3/createThumbnail.handler
+    iamRoleStatements:
+      - Effect: Allow
+        Action:
+          - s3:PutObject
+          - s3:GetObject
+        Resource: arn:aws:s3:::${self:provider.environment.IMAGES_S3_BUCKET}/*
+      - Effect: Allow
+        Action:
+          - xray:*
+        Resource:
+          - '*'
+
 resources:
   Resources:
     GatewayResponseDefault4XX:
@@ -334,6 +351,10 @@ resources:
       Type: AWS::S3::Bucket
       Properties:
         BucketName: ${self:provider.environment.IMAGES_S3_BUCKET}
+        NotificationConfiguration:
+          LambdaConfigurations:
+          - Event: s3:ObjectCreated:*
+            Function: !GetAtt CreateThumbnailLambdaFunction.Arn
         CorsConfiguration:
           CorsRules:
             -
@@ -348,6 +369,15 @@ resources:
                 - DELETE
                 - HEAD
               MaxAge: 3000
+
+    CreateThumbnailPermission:
+      Type: AWS::Lambda::Permission
+      Properties:
+        FunctionName: !Ref CreateThumbnailLambdaFunction
+        Principal: s3.amazonaws.com
+        Action: lambda:InvokeFunction
+        SourceAccount: !Ref AWS::AccountId
+        SourceArn: arn:aws:s3:::${self:provider.environment.IMAGES_S3_BUCKET}
     
     BucketPolicy:
       Type: AWS::S3::BucketPolicy
