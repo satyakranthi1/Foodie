@@ -41,11 +41,11 @@ export class RestaurantsHelper {
         }
     }
 
-    async deleteRestaurant(cuisineId: string, timestamp: string, userId: string) {
+    async deleteRestaurant(cuisineId: string, restaurantId: string, userId: string) {
         logger.info(`Deleting restaurant with cuisineId: ${cuisineId} for user: ${userId}`)
         let result: any
         try {
-            result = await restaurantsAccess.deleteRestaurant(cuisineId, timestamp, userId)
+            result = await restaurantsAccess.deleteRestaurant(cuisineId, restaurantId, userId)
         } catch(err) {
             logger.error('operation threw an error', { error: err.message })
             logger.error(`error: ${JSON.stringify(err)}`)

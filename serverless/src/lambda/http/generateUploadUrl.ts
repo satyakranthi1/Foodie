@@ -15,16 +15,16 @@ const reviewsHelper = new ReviewsHelper()
 export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
     logger.info(`Handling event ${JSON.stringify(event)}`)
     const generateUrlRequest: GenerateUrlRequest = JSON.parse(event.body)
-    logger.info(`restaurantId is: ${generateUrlRequest.restaurantId} reviewId is: ${generateUrlRequest.reviewId} timestamp is ${generateUrlRequest.timestamp}`)
+    logger.info(`restaurantId is: ${generateUrlRequest.restaurantId} reviewId is: ${generateUrlRequest.reviewId} reviewId is ${generateUrlRequest.reviewId}`)
     const userId = getUserId(event)
     let preSignedUploadUrl: string
     let statusCode: number
     let body: string
     try {
-      if (reviewsHelper.isUserReview(userId, generateUrlRequest.restaurantId)) {
+      if (reviewsHelper.isUserReview(userId, generateUrlRequest.restaurantId, generateUrlRequest.reviewId)) {
         preSignedUploadUrl = await s3Helper.GenerateUploadUrl(generateUrlRequest.reviewId)
         const attachmentUrl = `https://${bucketName}.s3.amazonaws.com/thumbnails/${generateUrlRequest.reviewId}`
-        await reviewsHelper.updateAttachmentUrl(generateUrlRequest.restaurantId, generateUrlRequest.timestamp, attachmentUrl)
+        await reviewsHelper.updateAttachmentUrl(generateUrlRequest.restaurantId, generateUrlRequest.reviewId, attachmentUrl)
         logger.info(`Updated todo with attachmentUrl`)
         statusCode = 201
         body = JSON.stringify({
@@ -32,7 +32,8 @@ export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEven
           attachmentUrl: attachmentUrl
           })
       } else {
-        throw new Error('Review does not belong to the user')
+        logger.error('Review does not belong to the user')
+        statusCode = 400
       }
     } catch(err) {
       logger.error('Operation threw an error', { error: err.message })

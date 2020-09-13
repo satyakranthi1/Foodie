@@ -70,16 +70,17 @@ export class ReviewsAccess {
         }
     }
 
-    async isUserReview(reviewId: string, restaurantId: string) {
+    async isUserReview(userId: string, restaurantId: string, reviewId: string) {
         logger.info(`In function is user review`)
         let result: any
         try {
             result = await this.docClient.query({
                 TableName: this.reviewsTable,
-                KeyConditionExpression: 'restaurantId = :restaurantId AND reviewId = :reviewId',
+                KeyConditionExpression: 'restaurantId = :restaurantId AND reviewId = :reviewId AND userId = :userId',
                 ExpressionAttributeValues: {
                     ':restaurantId' : restaurantId,
-                    ':reviewId' : reviewId
+                    ':reviewId' : reviewId,
+                    ':userId' : userId
                 },
                 ScanIndexForward: false
             }).promise()

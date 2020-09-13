@@ -8,15 +8,11 @@
       },
       "reviewId": {
         "type": "string"
-      },
-      "timestamp": {
-          "type": "string"
       }
     },
     "required": [
-      "cuisineId",
-      "reviewId",
-      "timestamp"
+      "restaurantId",
+      "reviewId"
     ],
     "additionalProperties": false
 }

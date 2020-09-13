@@ -48,18 +48,20 @@ export class RestaurantsAccess {
         }
     }
 
-    async deleteRestaurant(cuisineId: string, timestamp: string, userId: string) {
-        logger.info(`Soft deleting restaurant of cuisineId: ${cuisineId} & timestamp: ${timestamp} for userId: ${userId}`)
+    async deleteRestaurant(cuisineId: string, restaurantId: string, userId: string) {
+        logger.info(`Soft deleting restaurant of cuisineId: ${cuisineId} & restaurantId: ${restaurantId} for userId: ${userId}`)
         try {
             await this.docClient.update({
                 TableName: this.restaurantsTable,
                 Key: {
                     cuisineId: cuisineId,
-                    timestamp: timestamp
+                    restaurantId: restaurantId
                 },
+                ConditionExpression: 'userId = :userId',
                 UpdateExpression: 'set deleted=:d',
                 ExpressionAttributeValues: {
-                    ':d': true
+                    ':d': true,
+                    ':userId': userId
                 }
             }).promise()
         } catch (err) {
