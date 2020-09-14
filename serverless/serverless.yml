@@ -320,12 +320,12 @@ resources:
         AttributeDefinitions:
           - AttributeName: cuisineId
             AttributeType: S
-          - AttributeName: timestamp
+          - AttributeName: restaurantId
             AttributeType: S
         KeySchema:
           - AttributeName: cuisineId
             KeyType: HASH
-          - AttributeName: timestamp
+          - AttributeName: restaurantId
             KeyType: RANGE
         BillingMode: PAY_PER_REQUEST
         TableName: ${self:provider.environment.RESTAURANTS_TABLE}
@@ -336,12 +336,12 @@ resources:
         AttributeDefinitions:
           - AttributeName: restaurantId
             AttributeType: S
-          - AttributeName: timestamp
+          - AttributeName: reviewId
             AttributeType: S
         KeySchema:
           - AttributeName: restaurantId
             KeyType: HASH
-          - AttributeName: timestamp
+          - AttributeName: reviewId
             KeyType: RANGE
         BillingMode: PAY_PER_REQUEST
         TableName: ${self:provider.environment.REVIEWS_TABLE}

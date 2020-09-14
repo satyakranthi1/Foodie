@@ -45,10 +45,10 @@ export class ReviewsHelper {
         }
     }
 
-    async isUserReview(reviewId: string, restaurantId: string) {
-        logger.info(`Comparing userId with reviewId: ${reviewId} of restaurantId: ${restaurantId}`)
+    async isUserReview(userId: string, restaurantId: string, reviewId: string) {
+        logger.info(`Comparing userId: ${userId} with reviewId: ${reviewId} of restaurantId: ${restaurantId}`)
         try {
-            await reviewsAccess.isUserReview(reviewId, restaurantId)
+            await reviewsAccess.isUserReview(userId, restaurantId, reviewId)
         } catch(err) {
             logger.error('operation threw an error', { error: 'is user review failed' })
         }

@@ -52,9 +52,9 @@ export class DataStorageService {
       );
   }
 
-  async deleteRestaurant(restaurantId: string, cuisineId: string, timestamp: string) {
+  async deleteRestaurant(restaurantId: string, cuisineId: string) {
     console.log(`In data storage service deleteRestaurant`);
-    const result = await this.apiService.deleteRestaurant$(restaurantId, cuisineId, timestamp);
+    const result = await this.apiService.deleteRestaurant$(restaurantId, cuisineId);
   }
 
   async getReviews(restaurantId: string): Promise<Review[]> {
@@ -84,8 +84,8 @@ export class DataStorageService {
     );
   }
 
-  async getUploadUrl(restaurantId: string, timestamp: string, reviewId: string) {
-    return await this.apiService.getUploadUrl$(restaurantId, timestamp, reviewId);
+  async getUploadUrl(restaurantId: string, reviewId: string) {
+    return await this.apiService.getUploadUrl$(restaurantId, reviewId);
   }
 
   async uploadImage(selectedFile: File, uploadUrl: string) {

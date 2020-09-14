@@ -60,7 +60,7 @@ export class RestaurantsComponent implements OnInit, OnDestroy {
   }
 
   async onDeleteRestaurant(restaurant: any) {
-    this.restaurantsService.deleteRestaurant(restaurant.restaurantId, restaurant.cuisineId, restaurant.timestamp);
+    this.restaurantsService.deleteRestaurant(restaurant.restaurantId, restaurant.cuisineId);
   }
 
   ngOnDestroy() {

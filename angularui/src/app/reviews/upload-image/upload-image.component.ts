@@ -35,7 +35,7 @@ export class UploadImageComponent implements OnInit, OnDestroy {
   }
 
   async getUploadUrl(restaurantId: string, timestamp: string, reviewId: string) {
-    this.uploadUrl = await this.uploadImageService.getUploadUrl(restaurantId, timestamp, reviewId);
+    this.uploadUrl = await this.uploadImageService.getUploadUrl(restaurantId, reviewId);
   }
 
   onFileSelected(event) {

@@ -12,11 +12,11 @@ export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEven
     logger.info(`Handling event: ${JSON.stringify(event)}`)
     const deleteRestaurantRequest: DeleteRestaurantRequest = JSON.parse(event.body)
     const userId = getUserId(event)
-    logger.info(`cuisineId is ${deleteRestaurantRequest.cuisineId} & userId is ${userId} & timestamp is ${deleteRestaurantRequest.timestamp}`)
+    logger.info(`cuisineId is ${deleteRestaurantRequest.cuisineId} & userId is ${userId} & restaurantId is ${deleteRestaurantRequest.restaurantId}`)
     let statusCode: number
     let body: string = ''
     try {
-      await restaurantsHelper.deleteRestaurant(deleteRestaurantRequest.cuisineId, deleteRestaurantRequest.timestamp, userId)
+      await restaurantsHelper.deleteRestaurant(deleteRestaurantRequest.cuisineId, deleteRestaurantRequest.restaurantId, userId)
       logger.info(`Restaurant deleted`)
       statusCode = 201
     } catch(err) {

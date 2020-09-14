@@ -49,7 +49,7 @@ export class ReviewsAccess {
         }
     }
 
-    async updateAttachmentUrl(restaurantId: string, timestamp: string, attachmentUrl: string) {
+    async updateAttachmentUrl(restaurantId: string, reviewId: string, attachmentUrl: string) {
         logger.info(`Updating review`)
         try {
             await this.docClient
@@ -57,7 +57,7 @@ export class ReviewsAccess {
                 TableName: this.reviewsTable,
                 Key: {
                     restaurantId,
-                    timestamp
+                    reviewId
                 },
                 UpdateExpression: "set attachmentUrl=:a",
                 ExpressionAttributeValues: {
@@ -70,16 +70,17 @@ export class ReviewsAccess {
         }
     }
 
-    async isUserReview(reviewId: string, restaurantId: string) {
+    async isUserReview(userId: string, restaurantId: string, reviewId: string) {
         logger.info(`In function is user review`)
         let result: any
         try {
             result = await this.docClient.query({
                 TableName: this.reviewsTable,
-                KeyConditionExpression: 'restaurantId = :restaurantId AND reviewId = :reviewId',
+                KeyConditionExpression: 'restaurantId = :restaurantId AND reviewId = :reviewId AND userId = :userId',
                 ExpressionAttributeValues: {
                     ':restaurantId' : restaurantId,
-                    ':reviewId' : reviewId
+                    ':reviewId' : reviewId,
+                    ':userId' : userId
                 },
                 ScanIndexForward: false
             }).promise()

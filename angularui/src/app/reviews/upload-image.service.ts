@@ -19,10 +19,9 @@ export class UploadImageService {
     this.currentTimestamp = timestamp;
   }
 
-  async getUploadUrl(restaurantId: string, timestamp: string, reviewId: string) {
+  async getUploadUrl(restaurantId: string, reviewId: string) {
     const result = await this.dataStorageService.getUploadUrl(
       restaurantId,
-      timestamp,
       reviewId
     );
     this.currentAttachmentUrl = result.attachmentUrl;

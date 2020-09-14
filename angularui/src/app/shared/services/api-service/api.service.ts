@@ -39,11 +39,10 @@ export class ApiService {
     return this.http.get<GetReviewsResponse>(`${configuration.apiEndpoint}/restaurants/${restaurantId}/reviews`).toPromise();
   }
 
-  getUploadUrl$(restaurantId: string, timestamp: string, reviewId: string): Promise<UploadUrlResponse> {
+  getUploadUrl$(restaurantId: string, reviewId: string): Promise<UploadUrlResponse> {
     console.log(`In getUploadUrl`);
     return this.http.post<UploadUrlResponse>(`${configuration.apiEndpoint}/reviews/attachment`, {
       restaurantId,
-      timestamp,
       reviewId
     }).toPromise();
   }
@@ -105,15 +104,15 @@ export class ApiService {
     return this.http.put(uploadUrl, selectedFile).toPromise();
   }
 
-  deleteRestaurant$(restaurantId: string, cuisineId: string, timestamp: string) {
+  deleteRestaurant$(restaurantId: string, cuisineId: string) {
     console.log(`In deleteRestaurant`);
     console.log(JSON.stringify({
       cuisineId,
-      timestamp
+      restaurantId
     }));
     return this.http.post(`${configuration.apiEndpoint}/restaurants/${restaurantId}`, {
       cuisineId,
-      timestamp
+      restaurantId
     }).toPromise();
   }
 }

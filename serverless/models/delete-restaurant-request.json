@@ -6,13 +6,13 @@
       "cuisineId": {
         "type": "string"
       },
-      "timestamp": {
+      "restaurantId": {
           "type": "string"
       }
     },
     "required": [
       "cuisineId",
-      "timestamp"
+      "restaurantId"
     ],
     "additionalProperties": false
 }

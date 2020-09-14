@@ -58,8 +58,8 @@ export class RestaurantsService {
     this.restaurantsChanged.next(this.restaurants.slice());
   }
 
-  async deleteRestaurant(restaurantId: string, cuisineId: string, timestamp: string) {
-    const result = await this.dataStorageService.deleteRestaurant(restaurantId, cuisineId, timestamp);
+  async deleteRestaurant(restaurantId: string, cuisineId: string) {
+    const result = await this.dataStorageService.deleteRestaurant(restaurantId, cuisineId);
     remove(this.restaurants, (el: Restaurant) => el.restaurantId === restaurantId);
     this.restaurantsChanged.next(this.restaurants.slice());
   }
