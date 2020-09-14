@@ -81,9 +81,7 @@ async function getSecret() {
     .getSecretValue({
       SecretId: secretId
     }).promise()
-
     cachedSecret = data.SecretString
-    
     return JSON.parse(cachedSecret)
 }
 

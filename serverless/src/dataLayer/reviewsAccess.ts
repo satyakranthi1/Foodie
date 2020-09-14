@@ -49,7 +49,7 @@ export class ReviewsAccess {
         }
     }
 
-    async updateAttachmentUrl(restaurantId: string, timestamp: string, attachmentUrl: string) {
+    async updateAttachmentUrl(restaurantId: string, reviewId: string, attachmentUrl: string) {
         logger.info(`Updating review`)
         try {
             await this.docClient
@@ -57,7 +57,7 @@ export class ReviewsAccess {
                 TableName: this.reviewsTable,
                 Key: {
                     restaurantId,
-                    timestamp
+                    reviewId
                 },
                 UpdateExpression: "set attachmentUrl=:a",
                 ExpressionAttributeValues: {
