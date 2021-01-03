@@ -65,6 +65,28 @@ resource "aws_iam_role_policy" "drc_policy" {
         ],
         "Effect": "Allow",
         "Resource": "arn:aws:dynamodb:us-east-2:498985080589:table/Restaurants-dev"
+    },
+    {
+        "Action": [
+            "sqs:ReceiveMessage",
+            "sqs:SendMessage",
+            "sqs:SendMessageBatch",
+            "sqs:DeleteMessage",
+            "sqs:DeleteMessageBatch"
+        ],
+        "Effect": "Allow",
+        "Resource": "arn:aws:sqs:us-east-2:498985080589:restaurant-error-queue"
+    },
+    {
+        "Action": [
+            "sqs:ReceiveMessage",
+            "sqs:SendMessage",
+            "sqs:SendMessageBatch",
+            "sqs:DeleteMessage",
+            "sqs:DeleteMessageBatch"
+        ],
+        "Effect": "Allow",
+        "Resource": "arn:aws:sqs:us-east-2:498985080589:review-error-queue"
     }
   ]
 }
@@ -92,6 +114,6 @@ resource "aws_instance" "dr_compute" {
   instance_type = "t2.micro"
     iam_instance_profile = aws_iam_instance_profile.drc_profile.name
   tags = {
-    Name = "DeleteRestaurant"
+    App = "DeleteRestaurant"
   }
 }
