@@ -1,0 +1,28 @@
+{
+  "name": "deleterestaurantbatch",
+  "version": "1.0.0",
+  "description": "Deletes restaurant and reviews as a batch",
+  "main": "app.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "ts-node app.ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/satyakranthi1/Foodie.git"
+  },
+  "author": "Satya Kranthi Penumanchili",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/satyakranthi1/Foodie/issues"
+  },
+  "homepage": "https://github.com/satyakranthi1/Foodie#readme",
+  "dependencies": {
+    "winston": "^3.2.1"
+  },
+  "devDependencies": {
+    "@types/node": "^10.17.50",
+    "ts-node": "^9.1.1",
+    "typescript": "^3.2.4"
+  }
+}
