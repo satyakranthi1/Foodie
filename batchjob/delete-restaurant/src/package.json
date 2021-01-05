@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/satyakranthi1/Foodie#readme",
   "dependencies": {
+    "aws-sdk": "^2.820.0",
     "winston": "^3.2.1"
   },
   "devDependencies": {
