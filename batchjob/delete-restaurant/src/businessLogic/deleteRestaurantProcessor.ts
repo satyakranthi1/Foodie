@@ -6,11 +6,13 @@
 //then loop for rest of the restaurants that are deleted
 import { RestaurantAccess } from '../dataLayer/restaurantAccess'
 import { ReviewAccess } from '../dataLayer/reviewAccess'
+import { S3Helper } from '../s3Layer/s3Helper'
 import { createLogger } from '../utils/logger'
 
 const logger = createLogger(`DeleteRestaurantProcessor`)
 const restaurantAccess = new RestaurantAccess()
 const reviewAccess = new ReviewAccess()
+const s3Helper = new S3Helper()
 
 export class DeleteRestaurantProcessor {
 
@@ -55,16 +57,8 @@ export class DeleteRestaurantProcessor {
 
     async processDeleteReviews(items: any) {
         if(items !== undefined && items !== null) {
-            items.forEach(async review => {
-                await this.processDeleteReview(review.reviewId)
-            });
+            await reviewAccess.deleteReviews(items)
+            await s3Helper.deleteReviewImages(items)
         } 
-    }
-
-    async processDeleteReview(reviewId) {
-        if (reviewId && reviewId !== "") {
-            //delete review from dynamo
-            //delete review photo from s3 if exists
-        }
     }
 }
