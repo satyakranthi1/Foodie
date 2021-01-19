@@ -79,10 +79,12 @@ export class ReviewAccess {
                     }
                 } catch(err) {
                     logger.error(`BatchWrite threw an error: ${JSON.stringify(err)}`)
+                    throw new Error(err)
                 }
             }
         } catch(err) {
             logger.error('operation threw an error', err)
+            throw new Error(err)
         }
     }
 
