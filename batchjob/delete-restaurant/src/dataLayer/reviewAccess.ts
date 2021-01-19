@@ -51,7 +51,7 @@ export class ReviewAccess {
                     DeleteRequest: {
                         Key: {
                             restaurantId: review.restaurantId.toString(),
-                            timestamp: review.timestamp.toString()
+                            reviewId: review.reviewId.toString()
                         }
                     }
                 })
@@ -59,39 +59,26 @@ export class ReviewAccess {
             logger.info(`Batch write request created: ${JSON.stringify(batchWriteRequests)}`)
 
             while(batchWriteRequests.length != 0) {
+                let maxBatchWriteRequests;
                 if(batchWriteRequests.length < 25) {
+                    maxBatchWriteRequests = batchWriteRequests;
                     logger.info(`Less than 25 requests. Sending BatchWrite Request ${JSON.stringify(batchWriteRequests)}`)
-                    try {
-                        result = await this.docClient.batchWrite({
-                            RequestItems: {
-                                [this.reviewsTable]: batchWriteRequests
-                            }
-                        }).promise()
-                        if (Object.entries(result.UnprocessedItems).length != 0) {
-                            logger.info(`There are unprocessed items: ${JSON.stringify(result.UnprocessedItems)}`)
-                            batchWriteRequests = result.UnprocessedItems
-                        } else {
-                            batchWriteRequests.splice(0, batchWriteRequests.length)
-                        }
-                    } catch(err) {
-                        logger.error(`BatchWrite threw an error: ${JSON.stringify(err)}`)
-                    }
                 } else {
                     let maxBatchWriteRequests = batchWriteRequests.splice(0, 24)
                     logger.info(`25 or more requests. Sending BatchWrite Request ${JSON.stringify(maxBatchWriteRequests)}`)
-                    try {
-                        result = await this.docClient.batchWrite({
-                            RequestItems: {
-                                [this.reviewsTable]: maxBatchWriteRequests
-                            }
-                        }).promise()
-                        if(Object.entries(result.UnprocessedItems).length != 0) {
-                            logger.info(`There are unprocessed items: ${JSON.stringify(result.UnprocessedItems)}`)
-                            batchWriteRequests.push(result.UnprocessedItems)
+                }
+                try {
+                    result = await this.docClient.batchWrite({
+                        RequestItems: {
+                            [this.reviewsTable]: maxBatchWriteRequests
                         }
-                    } catch(err) {
-                        logger.error(`BatchWrite threw an error: ${JSON.stringify(err)}`)
+                    }).promise()
+                    if(Object.entries(result.UnprocessedItems).length != 0) {
+                        logger.info(`There are unprocessed items: ${JSON.stringify(result.UnprocessedItems)}`)
+                        batchWriteRequests.push(result.UnprocessedItems)
                     }
+                } catch(err) {
+                    logger.error(`BatchWrite threw an error: ${JSON.stringify(err)}`)
                 }
             }
         } catch(err) {

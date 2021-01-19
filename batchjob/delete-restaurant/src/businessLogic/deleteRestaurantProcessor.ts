@@ -4,6 +4,7 @@
 //delete all reviews and then delete restaurant
 //any failures go to review error queue or restaurant error queue
 //then loop for rest of the restaurants that are deleted
+//Add try catch blocks
 import { RestaurantAccess } from '../dataLayer/restaurantAccess'
 import { ReviewAccess } from '../dataLayer/reviewAccess'
 import { S3Helper } from '../s3Layer/s3Helper'
@@ -17,6 +18,8 @@ const s3Helper = new S3Helper()
 export class DeleteRestaurantProcessor {
 
     async deleteRestaurants() {
+        //Process restaurants error queue
+        //Process reviews error queue
         let result: any
         result = await restaurantAccess.getDeletedRestaurants()
         if(result.Items !== undefined && result.Items !== null) {
@@ -36,6 +39,7 @@ export class DeleteRestaurantProcessor {
                 await this.processDeletedRestaurant(restaurant.restaurantId)
             });
         } 
+        await restaurantAccess.deleteRestaurants(items)
     }
 
     async processDeletedRestaurant(restaurantId) {
@@ -52,7 +56,6 @@ export class DeleteRestaurantProcessor {
                 }
             }
         }
-        //delete restaurant from dynamo
     }
 
     async processDeleteReviews(items: any) {
