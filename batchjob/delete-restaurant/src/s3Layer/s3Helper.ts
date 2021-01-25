@@ -11,14 +11,16 @@ const s3 = new AWS.S3({
 
 export class S3Helper {
 
-    async deleteReviewImages(reviews: any) {
+    async deleteReviewImages(reviews: any, prefix = "") {
         let result;
-        const deleteObjects = reviews.map(review => { Key: review.reviewId })
+        const deleteObjects = reviews.map(review => prefix===""?
+            { Key: review.reviewId }: { Key: `${prefix}${review.reviewId}` }
+        )
         logger.info(`Delete objects created: ${JSON.stringify(deleteObjects)}`)
         while(deleteObjects.length != 0) {
             let maxDeleteObjects;
             if(deleteObjects.length <= 1000) {
-                maxDeleteObjects = deleteObjects;
+                maxDeleteObjects = deleteObjects.splice(0, deleteObjects.length);
                 logger.info(`deleteObjects length is less than 1000`)
             } else {
                 maxDeleteObjects = deleteObjects.splice(0, 999)

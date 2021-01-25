@@ -23,12 +23,12 @@ export class DeleteRestaurantProcessor {
         let result: any
         try {
             result = await restaurantAccess.getDeletedRestaurants()
-            if(result.Items !== undefined && result.Items !== null) {
+            if(result.Items !== undefined && result.Items !== null && result.Items.length !== 0) {
                 await this.processDeletedRestaurants(result.Items)
                 while (result.LastEvaluatedKey !== undefined && result.LastEvaluatedKey !== null) {
                     logger.info(`LastEvaluatedKey: ${JSON.stringify(result.LastEvaluatedKey)}`)
                     result = await restaurantAccess.getDeletedRestaurants(result.LastEvaluatedKey)
-                    if(result.Items !== undefined && result.Items !== null)
+                    if(result.Items !== undefined && result.Items !== null && result.Items.length !== 0)
                         await this.processDeletedRestaurants(result.Items)
                 }
             }   
@@ -38,15 +38,15 @@ export class DeleteRestaurantProcessor {
     }
     
     async processDeletedRestaurants(items: any) {
-        if(items !== undefined && items !== null) {
-            items.forEach(async restaurant => {
+        if(items !== undefined && items !== null && items.length !== 0) {
+            for (const restaurant of items) {
                 try {
                     await this.processDeletedRestaurant(restaurant.restaurantId)
                 }catch(err) {
                     logger.error(`Error deleting restaurant: ${JSON.stringify(restaurant)}`)
                     //Add it to restaurant error queue
                 }
-            });
+            }
         }
         try {
             await restaurantAccess.deleteRestaurants(items)
@@ -61,7 +61,8 @@ export class DeleteRestaurantProcessor {
             if (restaurantId && restaurantId !== "") {
                 let result: any
                 result = await reviewAccess.getReviews(restaurantId)
-                if (result.Items !== undefined && result.Items !== null) {
+                logger.info(`RestaurantId: ${restaurantId} Reviews: ${result.Items}`)
+                if (result.Items !== undefined && result.Items !== null && result.Items.length !== 0) {
                     try {
                         await this.processDeleteReviews(result.Items)
                         while (result.LastEvaluatedKey !== undefined && result.LastEvaluatedKey !== null) {
@@ -83,7 +84,7 @@ export class DeleteRestaurantProcessor {
     }
 
     async processDeleteReviews(items: any) {
-        if(items !== undefined && items !== null) {
+        if(items !== undefined && items !== null && items.length !== 0) {
             try {
                 await reviewAccess.deleteReviews(items)
             }catch(err){
@@ -95,6 +96,13 @@ export class DeleteRestaurantProcessor {
                 await s3Helper.deleteReviewImages(items)
             }catch(err){
                 logger.error(`Error deleting review images ${JSON.stringify(err)}`)
+                throw new Error(err)
+            }
+
+            try{
+                await s3Helper.deleteReviewImages(items, "thumbnails/")
+            }catch(err){
+                logger.error(`Error deleting thumbnail review images ${JSON.stringify(err)}`)
                 throw new Error(err)
             }
         } 

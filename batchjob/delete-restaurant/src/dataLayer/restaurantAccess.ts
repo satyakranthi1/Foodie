@@ -15,7 +15,7 @@ export class RestaurantAccess {
             if(lastEvaluatedKey === null) {
                 result = await this.docClient.scan({
                     TableName: this.restaurantsTable,
-                    ProjectionExpression: "restaurantId, deleted",
+                    ProjectionExpression: "cuisineId, restaurantId, deleted",
                     FilterExpression: 'deleted = :d',
                     ExpressionAttributeValues: {
                         ':d' : true
@@ -24,7 +24,7 @@ export class RestaurantAccess {
             } else {
                 result = await this.docClient.scan({
                     TableName: this.restaurantsTable,
-                    ProjectionExpression: "restaurantId, deleted",
+                    ProjectionExpression: "ciusineId, restaurantId, deleted",
                     FilterExpression: 'deleted = :d',
                     ExpressionAttributeValues: {
                         ':d' : true
@@ -60,10 +60,10 @@ export class RestaurantAccess {
             while(batchWriteRequests.length != 0) {
                 let maxBatchWriteRequests;
                 if(batchWriteRequests.length < 25) {
-                    maxBatchWriteRequests = batchWriteRequests;
+                    maxBatchWriteRequests = batchWriteRequests.splice(0, batchWriteRequests.length);
                     logger.info(`Less than 25 requests. Sending BatchWrite Request ${JSON.stringify(batchWriteRequests)}`)
                 } else {
-                    let maxBatchWriteRequests = batchWriteRequests.splice(0, 24)
+                    maxBatchWriteRequests = batchWriteRequests.splice(0, 24)
                     logger.info(`25 or more requests. Sending BatchWrite Request ${JSON.stringify(maxBatchWriteRequests)}`)
                 }
                 try {
