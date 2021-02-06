@@ -26,36 +26,6 @@ export class S3Helper {
         }
     }
 
-    async removeImage(reviewId: string) {
-        try {
-            await this.deleteObject(reviewId)
-        } catch(err) {
-            logger.error(`remove image failed: ${JSON.stringify(err)}`)
-            throw new Error('remove image failed')
-        }
-    }
-
-    async deleteObject(reviewId: string) {
-        return new Promise(function(resolve, reject) {
-            try {
-                s3.deleteObject({
-                    Bucket: bucketName,
-                    Key: reviewId
-                }, (err, data) => {
-                    if(!data) {
-                        throw new Error(err.message)
-                    }
-                    logger.info(JSON.stringify(data))
-                })
-                logger.info(`Image deleted for reviewid: ${reviewId}`)
-                resolve("done")
-            } catch(err) {
-                reject(err)
-                logger.error(`remove image failed: ${JSON.stringify(err)}`)
-            }
-        })
-    }
-
     async getImage(reviewId: string) {
         try {
             const s3Object = await s3.getObject({ 
