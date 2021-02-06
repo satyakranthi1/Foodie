@@ -1,0 +1,7 @@
+{
+    "RESTAURANTS_TABLE" : "Restaurants-dev",
+    "REVIEWS_TABLE" : "Reviews-dev",
+    "IMAGES_S3_BUCKET": "foodie-images-spenu-dev",
+    "RESTAURANT_ERROR_QUEUE": "https://sqs.us-east-2.amazonaws.com/498985080589/restaurant-error-queue",
+    "REVIEW_ERROR_QUEUE": "https://sqs.us-east-2.amazonaws.com/498985080589/review-error-queue"
+}
