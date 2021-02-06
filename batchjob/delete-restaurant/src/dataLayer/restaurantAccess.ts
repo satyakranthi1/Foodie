@@ -32,7 +32,7 @@ export class RestaurantAccess {
                     ExclusiveStartKey: lastEvaluatedKey
                 }).promise()
             }
-            logger.info(`Result from scan on restaurants table: ${JSON.stringify(result)}`)
+            logger.debug(`Result from scan on restaurants table: ${JSON.stringify(result)}`)
             return result
         } catch (err) {
             logger.error('operation threw an error', { error: err.message })
@@ -55,16 +55,16 @@ export class RestaurantAccess {
                     }
                 })
             })
-            logger.info(`Batch write request created: ${JSON.stringify(batchWriteRequests)}`)
+            logger.debug(`Batch write request created: ${JSON.stringify(batchWriteRequests)}`)
 
             while(batchWriteRequests.length != 0) {
                 let maxBatchWriteRequests;
                 if(batchWriteRequests.length < 25) {
                     maxBatchWriteRequests = batchWriteRequests.splice(0, batchWriteRequests.length);
-                    logger.info(`Less than 25 requests. Sending BatchWrite Request ${JSON.stringify(batchWriteRequests)}`)
+                    logger.debug(`Less than 25 requests. Sending BatchWrite Request ${JSON.stringify(batchWriteRequests)}`)
                 } else {
                     maxBatchWriteRequests = batchWriteRequests.splice(0, 24)
-                    logger.info(`25 or more requests. Sending BatchWrite Request ${JSON.stringify(maxBatchWriteRequests)}`)
+                    logger.debug(`25 or more requests. Sending BatchWrite Request ${JSON.stringify(maxBatchWriteRequests)}`)
                 }
                 try {
                     result = await this.docClient.batchWrite({
@@ -73,7 +73,7 @@ export class RestaurantAccess {
                         }
                     }).promise()
                     if(Object.entries(result.UnprocessedItems).length != 0) {
-                        logger.info(`There are unprocessed items: ${JSON.stringify(result.UnprocessedItems)}`)
+                        logger.debug(`There are unprocessed items: ${JSON.stringify(result.UnprocessedItems)}`)
                         batchWriteRequests.push(result.UnprocessedItems)
                     }
                 } catch(err) {
