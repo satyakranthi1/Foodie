@@ -8,17 +8,39 @@ const restaurantsHelper = new RestaurantsHelper()
 
 export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
     logger.info(`Handling event: ${JSON.stringify(event)}`)
-    const cuisineId = event.pathParameters.cuisineId
-    logger.info(`CuisineId is ${cuisineId}`)
-    let items: any = []
+    let LastEvaluatedKey
+    let LastCuisineId
+    let LastRestaurantId
+    let Limit
+    let cuisineId
+    let result: any = []
     let statusCode: number
     let body: string
     try {
-        items = await restaurantsHelper.getRestaurants(cuisineId)
-        statusCode = 200
-        body = JSON.stringify({
-            items
-        })
+        const queryParams = event.queryStringParameters
+        if (queryParams !== undefined && queryParams !== null) {
+            LastCuisineId = queryParams.LastCuisineId === undefined ? null : queryParams.LastCuisineId
+            LastRestaurantId = queryParams.LastRestaurantId === undefined ? null : queryParams.LastRestaurantId
+            Limit = queryParams.Limit === undefined ? 50 : queryParams.Limit
+            cuisineId = queryParams.cuisineId === undefined ? null : queryParams.cuisineId
+        }
+        logger.info(`CuisineId is ${cuisineId}, LastRestaurantId is ${LastRestaurantId}, LastCuisineId is ${LastCuisineId}, Limit is ${Limit}`)
+        if(cuisineId !== null) {
+            if (LastCuisineId !== null && LastRestaurantId !== null) {
+                LastEvaluatedKey = { cuisineId: LastCuisineId, restaurantId: LastRestaurantId }
+            } else {
+                LastEvaluatedKey = null
+            }
+            result = await restaurantsHelper.getRestaurants(cuisineId, LastEvaluatedKey, Limit)
+            statusCode = 200
+            body = JSON.stringify({
+                items: result.items,
+                LastEvaluatedKey: result.LastEvaluatedKey
+            })
+        } else {
+            statusCode = 400
+            body = 'Missing cuisine Id'
+        }
     } catch(err) {
         logger.error('Get restaurants failed', { error: err.message })
         statusCode = 500

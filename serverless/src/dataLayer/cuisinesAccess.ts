@@ -11,17 +11,25 @@ export class CuisinesAccess {
     constructor(private readonly docClient: DocumentClient = createDynamoDBClient(),
         private readonly cuisinesTable = process.env.CUISINES_TABLE){}
 
-    async getCuisines() {
+    async getCuisines(LastEvaluatedKey: any, Limit: any) {
         logger.info(`Getting all cuisines`)
+        logger.info(`LastEvaluatedKey: ${LastEvaluatedKey}, Limit${Limit}`)
         let result: any
         try {
-            result = await this.docClient.scan({
-                TableName: this.cuisinesTable
-            }).promise()
+            if(LastEvaluatedKey === null ){
+                result = await this.docClient.scan({
+                    TableName: this.cuisinesTable,
+                    Limit
+                }).promise()
+            } else {
+                result = await this.docClient.scan({
+                    TableName: this.cuisinesTable,
+                    Limit,
+                    ExclusiveStartKey: LastEvaluatedKey
+                }).promise()
+            }
             logger.info(`Result from scan on cuisines table: ${JSON.stringify(result)}`)
-            const items = result.Items
-            logger.info(`Items from the result of scan: ${JSON.stringify(items)}`)
-            return items
+            return result
         } catch (err) {
             logger.error('operation threw an error', { error: err.message })
             throw new Error(err)

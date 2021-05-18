@@ -8,15 +8,30 @@ const cuisinesHelper = new CuisinesHelper()
 
 export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
     logger.info(`Handling event: ${JSON.stringify(event)}`)
-    let items: any = []
+    let LastCuisineId
+    let LastEvaluatedKey
+    let Limit
+    let result: any = {}
     let statusCode: number
     let body: string
     try {
-        items = await cuisinesHelper.getCuisines()
-        logger.info(`Items returned from helper: ${JSON.stringify(items)}`)
+        const queryParams = event.queryStringParameters
+        if (queryParams !== undefined && queryParams !== null) {
+            LastCuisineId = queryParams.LastCuisineId === undefined ? null : queryParams.LastCuisineId
+            Limit = queryParams.Limit === undefined ? 50 : queryParams.Limit
+        }
+        logger.info(`LastCuisineId is ${LastCuisineId}, Limit is ${Limit}`)
+        if (LastCuisineId !== null) {
+            LastEvaluatedKey = { id: LastCuisineId }
+        } else {
+            LastEvaluatedKey = null
+        }
+        result = await cuisinesHelper.getCuisines(LastEvaluatedKey, Limit)
+        logger.info(`result returned from helper: ${JSON.stringify(result)}`)
         statusCode = 200
         body = JSON.stringify({
-            items
+            items: result.Items,
+            LastEvaluatedKey: result.LastEvaluatedKey
         })
     } catch(err) {
         logger.error('Get cuisines failed', { error: err.message })
