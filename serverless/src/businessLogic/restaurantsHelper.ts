@@ -7,18 +7,22 @@ const logger = createLogger(`RestaurantsHelper`)
 const restaurantsAccess = new RestaurantsAccess()
 
 export class RestaurantsHelper {
-    async getRestaurants(cuisineId: string) {
-        logger.info(`CuisineId received ${cuisineId}`)
+    async getRestaurants(cuisineId: string, LastEvaluatedKey: any, Limit: any) {
+        logger.info(`CuisineId received ${cuisineId}, LastEvaluatedKey is ${LastEvaluatedKey}, Limit is ${Limit}`)
         try {
-            const items = await restaurantsAccess.getRestaurants(cuisineId)
-            logger.info(`items returned from restaurantsAccess layer: ${JSON.stringify(items)}`)
-            const filteredItems = items.filter((item) => {
-                if(item && !item.deleted) {
-                    return true
-                }
-            })
-            logger.info(`filtered items: ${JSON.stringify(filteredItems)}`)
-            return filteredItems
+            const result = await restaurantsAccess.getRestaurants(cuisineId, LastEvaluatedKey, Limit)
+            logger.info(`items returned from restaurantsAccess layer: ${JSON.stringify(result.Items)}`)
+            if(result.Items.length !== 0) {
+                const filteredItems = result.Items.filter((item) => {
+                    if(item && !item.deleted) {
+                        return true
+                    }
+                })
+                logger.info(`filtered items: ${JSON.stringify(filteredItems)}`)
+                return { items: filteredItems, LastEvaluatedKey: result.LastEvaluatedKey };
+            } else {
+                return { items: result.Items, LastEvaluatedKey: null };
+            }
         } catch(err) {
             logger.error('operation threw an error', { error: err.message })
             throw new Error(err)

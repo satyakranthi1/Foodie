@@ -7,13 +7,14 @@ const logger = createLogger(`CuisinesHelper`)
 const cuisinesAccess = new CuisinesAccess()
 
 export class CuisinesHelper {
-    async getCuisines()  {
+    async getCuisines(LastEvaluatedKey: any, Limit: any)  {
         logger.info('Getting Cuisines from cuisinesAccess')
-        let items: any
+        logger.info(`LastEvaluatedKey: ${LastEvaluatedKey}, Limit ${Limit}`)
+        let result: any
         try {
-            items = await cuisinesAccess.getCuisines()
-            logger.info(`Items returned from cuisineAccess: ${JSON.stringify(items)}`)
-            return items
+            result = await cuisinesAccess.getCuisines(LastEvaluatedKey, Limit)
+            logger.info(`result returned from cuisineAccess: ${JSON.stringify(result)}`)
+            return result
         } catch(err) {
             logger.error('operation threw an error', { error: err.message })
             throw new Error(err)

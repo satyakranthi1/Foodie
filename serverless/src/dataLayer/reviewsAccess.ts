@@ -4,31 +4,41 @@ import { ReviewItem } from '../models/ReviewItem'
 import * as AWS  from 'aws-sdk'
 import * as AWSXRay from 'aws-xray-sdk'
 import { DocumentClient } from 'aws-sdk/clients/dynamodb'
-import { S3Helper } from '../businessLogic/s3Helper'
 
 const logger = createLogger(`ReviewsAccess`)
-const s3Helper = new S3Helper()
 
 export class ReviewsAccess {
     constructor( private readonly docClient: DocumentClient = createDynamoDBClient(),
     private readonly reviewsTable = process.env.REVIEWS_TABLE){}
     
-    async getReviews(restaurantId: string) {
-        logger.info(`restaurantId received is ${restaurantId}`)
+    async getReviews(restaurantId: string, LastEvaluatedKey: any, Limit: any) {
+        logger.info(`restaurantId received is ${restaurantId}, LastEvaluatedKey ${LastEvaluatedKey}, Limit is ${Limit}`)
         let result: any
         try {
-            result = await this.docClient.query({
-                TableName: this.reviewsTable,
-                KeyConditionExpression: 'restaurantId = :restaurantId',
-                ExpressionAttributeValues: {
-                    ':restaurantId' : restaurantId
-                },
-                ScanIndexForward: false
-            }).promise()
+            if(LastEvaluatedKey === null) {
+                result = await this.docClient.query({
+                    TableName: this.reviewsTable,
+                    KeyConditionExpression: 'restaurantId = :restaurantId',
+                    ExpressionAttributeValues: {
+                        ':restaurantId' : restaurantId
+                    },
+                    Limit,
+                    ScanIndexForward: false
+                }).promise()
+            } else {
+                result = await this.docClient.query({
+                    TableName: this.reviewsTable,
+                    KeyConditionExpression: 'restaurantId = :restaurantId',
+                    ExpressionAttributeValues: {
+                        ':restaurantId' : restaurantId
+                    },
+                    Limit,
+                    ScanIndexForward: false,
+                    ExclusiveStartKey: LastEvaluatedKey
+                }).promise()
+            }
             logger.info(`Result from query on reviews table: ${JSON.stringify(result)}`)
-            const items = result.Items
-            logger.info(`Items from result: ${JSON.stringify(items)}`)
-            return items
+            return result
         } catch (err) {
             logger.error('operation threw an error', { error: err.message })
             throw new Error(err)

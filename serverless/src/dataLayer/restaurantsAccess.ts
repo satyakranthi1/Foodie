@@ -11,22 +11,34 @@ export class RestaurantsAccess {
     constructor( private readonly docClient: DocumentClient = createDynamoDBClient(),
     private readonly restaurantsTable = process.env.RESTAURANTS_TABLE){}
     
-    async getRestaurants(cuisineId: string) {
-        logger.info(`cuisineId received is ${cuisineId}`)
+    async getRestaurants(cuisineId: string, LastEvaluatedKey: any, Limit: any) {
+        logger.info(`cuisineId received is ${cuisineId} LastEvaluatedKey ${LastEvaluatedKey}, Limit is ${Limit}`)
         let result: any
         try {
-            result = await this.docClient.query({
-                TableName: this.restaurantsTable,
-                KeyConditionExpression: 'cuisineId = :cuisineId',
-                ExpressionAttributeValues: {
-                    ':cuisineId' : cuisineId
-                },
-                ScanIndexForward: false
-            }).promise()
+            if(LastEvaluatedKey === null) {
+                result = await this.docClient.query({
+                    TableName: this.restaurantsTable,
+                    KeyConditionExpression: 'cuisineId = :cuisineId',
+                    ExpressionAttributeValues: {
+                        ':cuisineId' : cuisineId
+                    },
+                    Limit,
+                    ScanIndexForward: false
+                }).promise()
+            } else {
+                result = await this.docClient.query({
+                    TableName: this.restaurantsTable,
+                    KeyConditionExpression: 'cuisineId = :cuisineId',
+                    ExpressionAttributeValues: {
+                        ':cuisineId' : cuisineId
+                    },
+                    Limit,
+                    ScanIndexForward: false,
+                    ExclusiveStartKey: LastEvaluatedKey
+                }).promise()
+            }
             logger.info(`Result from query on restaurants table: ${JSON.stringify(result)}`)
-            const items = result.Items
-            logger.info(`Items from result: ${JSON.stringify(items)}`)
-            return items
+            return result
         } catch (err) {
             logger.error('operation threw an error', { error: err.message })
             throw new Error(err)

@@ -7,13 +7,13 @@ const logger = createLogger(`ReviewsHelper`)
 const reviewsAccess = new ReviewsAccess()
 
 export class ReviewsHelper {
-    async getReviews(restaurantId: string) {
-        logger.info(`restaurantId received ${restaurantId}`)
-        let items: any
+    async getReviews(restaurantId: string, LastEvaluatedKey: any, Limit: any) {
+        logger.info(`restaurantId received ${restaurantId}, LastEvaluatedKey ${LastEvaluatedKey}, Limit is ${Limit}`)
+        let result: any
         try {
-            items = await reviewsAccess.getReviews(restaurantId)
-            logger.info(`items returned from reviewsAccess layer: ${JSON.stringify(items)}`)
-            return items
+            result = await reviewsAccess.getReviews(restaurantId, LastEvaluatedKey, Limit)
+            logger.info(`items returned from reviewsAccess layer: ${JSON.stringify(result.items)}, LastEvaluatedKey: ${JSON.stringify(result.LastEvaluatedKey)}`)
+            return result
         } catch(err) {
             logger.error('operation threw an error', { error: err.message })
             throw new Error(err)
