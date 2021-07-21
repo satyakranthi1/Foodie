@@ -4,6 +4,7 @@ Foodie is a bare bones restaurant review app made to get hands-on experience wit
 
 ## Architecture
 
+![Alt text](Foodie Architecture)
 <img src="./docs/Foodie.jpeg
 ">
 
